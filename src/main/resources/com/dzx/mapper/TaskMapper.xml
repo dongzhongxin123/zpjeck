@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hnu.dao.TaskMapper">
+
+    <select id="findById" resultType="com.hnu.model.StudentTask" parameterType="java.lang.String">
+        SELECT *
+        FROM student_task
+        WHERE flag = 1 AND id = #{id}
+    </select>
+
+    <select id="selectByPrimaryKey" resultType="com.hnu.model.Task" parameterType="java.lang.String">
+        SELECT *
+        FROM task
+        WHERE flag = 1 AND id = #{id}
+    </select>
+
+    <select id="selectBystudent" parameterType="java.lang.String" resultType="com.hnu.model.Task">
+        SELECT t.*
+        FROM task t, student s, teacher_class tc
+        WHERE
+            t.flag = 1 AND s.flag = 1 AND tc.flag = 1 AND tc.class_id = s.class_id AND t.teacher_id = tc.teacher_id AND
+            s.id = #{id}
+    </select>
+
+    <select id="selectByTeacher" parameterType="java.lang.String" resultType="com.hnu.model.Task">
+        SELECT *
+        FROM task
+        WHERE flag = 1 AND teacher_id = #{teacherId}
+    </select>
+
+    <insert id="save" parameterType="com.hnu.model.Task">
+        insert into task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="teacherId != null">
+                teacher_id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
+            <if test="createtime != null">
+                createtime,
+            </if>
+            <if test="createby != null">
+                createby,
+            </if>
+            <if test="updatetime != null">
+                updatetime,
+            </if>
+            <if test="updateby != null">
+                updateby,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="teacherId != null">
+                #{teacherId},
+            </if>
+            <if test="title != null">
+                #{title},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+            <if test="flag != null">
+                #{flag},
+            </if>
+            <if test="createtime != null">
+                #{createtime},
+            </if>
+            <if test="createby != null">
+                #{createby},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime},
+            </if>
+            <if test="updateby != null">
+                #{updateby},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findStudentByTaskId" parameterType="java.lang.String" resultType="com.hnu.pojo.TaskStudentPojo">
+        SELECT
+            t.title,
+            t.content,
+            st.updatetime,
+            st.answer,
+            st.feedback
+        FROM task t, student_task st
+        WHERE t.id = #{id} AND st.task_id = t.id
+    </select>
+
+    <select id="isExitStudentTask" parameterType="java.lang.String" resultType="com.hnu.model.StudentTask">
+        SELECT st.*
+        FROM task t, student s, teacher_class tc, student_task st
+        WHERE t.flag = 1 AND s.flag = 1 AND tc.flag = 1 AND tc.class_id = s.class_id
+              AND t.teacher_id = tc.teacher_id AND s.id = #{studenId}
+              AND st.task_id = t.id AND t.id = #{taskId}
+
+    </select>
+
+    <update id="deleteTask" parameterType="java.lang.String">
+        UPDATE task
+        SET flag = 0
+        WHERE id = #{id}
+    </update>
+    <update id="updateTask" parameterType="com.hnu.model.Task">
+        update task
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="teacherId != null">
+                teacher_id = #{teacherId},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="flag != null">
+                flag = #{flag},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime},
+            </if>
+            <if test="createby != null">
+                createby = #{createby},
+            </if>
+            <if test="updatetime != null">
+                updatetime = #{updatetime},
+            </if>
+            <if test="updateby != null">
+                updateby = #{updateby},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <select id="studentTaskList" parameterType="java.lang.String" resultType="com.hnu.model.StudentTask">
+        SELECT st.*
+        FROM student_task st, teacher_class tc
+        WHERE tc.flag = 1 AND st.flag = 1 AND tc.teacher_id = #{teacherId} AND tc.class_id = st.class_id
+    </select>
+
+    <select id="studentTaskList2" parameterType="java.lang.String" resultType="com.hnu.model.StudentTask">
+        SELECT st.*
+        FROM student_task st, teacher_class tc
+        WHERE tc.flag = 1 AND st.flag = 1 AND tc.teacher_id = #{teacherId} AND
+              tc.class_id = st.class_id AND st.class_id = #{classId} AND st.task_id = #{taskId}
+
+    </select>
+
+</mapper>

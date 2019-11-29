@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hnu.dao.TeacherClassMapper">
+
+    <select id="findByClassId" parameterType="java.lang.String" resultType="com.hnu.model.Teacher">
+        SELECT t.*
+        FROM teacher t, teacher_class tc
+        WHERE t.flag = 1 AND tc.flag = 1 AND t.id = tc.teacher_id AND tc.class_id = #{classId}
+    </select>
+
+    <select id="findByTeacherId" parameterType="java.lang.String" resultType="com.hnu.model.Clazz">
+        SELECT c.*
+        FROM teacher_class tc, clazz c
+        WHERE c.flag = 1 AND tc.flag = 1 AND tc.teacher_id = #{teacherId} AND tc.class_id = c.id
+    </select>
+
+</mapper>

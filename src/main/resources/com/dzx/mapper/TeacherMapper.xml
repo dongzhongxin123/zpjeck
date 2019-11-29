@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hnu.dao.TeacherMapper">
+
+
+    <select id="findById" parameterType="java.lang.String" resultType="com.hnu.model.Teacher">
+        SELECT *
+        FROM teacher
+        WHERE id = #{id} AND flag = 1
+    </select>
+
+    <select id="findByTeacherId" resultType="com.hnu.model.Clazz" parameterType="java.lang.String">
+        SELECT c.*
+        FROM teacher_class t, clazz c
+        WHERE t.flag = 1 AND c.flag = 1 AND teacher_id = #{teacherId} AND c.id = t.class_id;
+    </select>
+
+    <select id="login" parameterType="java.lang.String" resultType="com.hnu.model.Teacher">
+        SELECT *
+        FROM teacher
+        WHERE flag = 1 AND NUMBER = #{number};
+    </select>
+    <update id="updateInfo" parameterType="com.hnu.model.Teacher">
+        update teacher
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="number != null">
+                number = #{number},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="portrait != null">
+                portrait = #{portrait},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="flag != null">
+                flag = #{flag},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime},
+            </if>
+            <if test="createby != null">
+                createby = #{createby},
+            </if>
+            <if test="updatetime != null">
+                updatetime = #{updatetime},
+            </if>
+            <if test="updateby != null">
+                updateby = #{updateby},
+            </if>
+        </set>
+        <where>
+            flag = 1 and id = #{id}
+        </where>
+    </update>
+
+    <!--   班级管理 -->
+    <insert id="insertClass" parameterType="com.hnu.model.Clazz">
+        insert into clazz
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="className != null">
+                class_name,
+            </if>
+            <if test="classNum != null">
+                class_num,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
+            <if test="createtime != null">
+                createtime,
+            </if>
+            <if test="createby != null">
+                createby,
+            </if>
+            <if test="updatetime != null">
+                updatetime,
+            </if>
+            <if test="updateby != null">
+                updateby,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="className != null">
+                #{className},
+            </if>
+            <if test="classNum != null">
+                #{classNum},
+            </if>
+            <if test="flag != null">
+                #{flag},
+            </if>
+            <if test="createtime != null">
+                #{createtime},
+            </if>
+            <if test="createby != null">
+                #{createby},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime},
+            </if>
+            <if test="updateby != null">
+                #{updateby},
+            </if>
+        </trim>
+    </insert>
+    <update id="deleteByClassId" parameterType="java.lang.String">
+        UPDATE clazz
+        SET flag = 0
+        WHERE id = #{id}
+    </update>
+    <select id="findByClassId" parameterType="java.lang.String" resultType="com.hnu.model.Clazz">
+        SELECT *
+        FROM clazz
+        WHERE flag = 1 AND id = #{id};
+    </select>
+    <update id="alterClass" parameterType="com.hnu.model.Clazz">
+        update clazz
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="className != null">
+                class_name = #{className},
+            </if>
+            <if test="classNum != null">
+                class_num = #{classNum},
+            </if>
+            <if test="flag != null">
+                flag = #{flag},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime},
+            </if>
+            <if test="createby != null">
+                createby = #{createby},
+            </if>
+            <if test="updatetime != null">
+                updatetime = #{updatetime},
+            </if>
+            <if test="updateby != null">
+                updateby = #{updateby},
+            </if>
+        </set>
+        <where>
+            flag = 1 and id = #{id}
+        </where>
+    </update>
+    <select id="classList" resultType="com.hnu.model.Clazz">
+        SELECT *
+        FROM clazz
+        WHERE flag = 1
+    </select>
+
+    <!--   学生模块   -->
+    <select id="studentList" resultType="com.hnu.model.Student">
+        SELECT *
+        FROM student
+        WHERE flag = #{flag}
+    </select>
+    <insert id="insertByStudent" parameterType="com.hnu.model.Student">
+        insert into student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="classId != null">
+                class_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+            <if test="portrait != null">
+                portrait,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
+            <if test="createtime != null">
+                createtime,
+            </if>
+            <if test="createby != null">
+                createby,
+            </if>
+            <if test="updatetime != null">
+                updatetime,
+            </if>
+            <if test="updateby != null">
+                updateby,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="classId != null">
+                #{classId},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="number != null">
+                #{number},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="address != null">
+                #{address},
+            </if>
+            <if test="sex != null">
+                #{sex},
+            </if>
+            <if test="age != null">
+                #{age},
+            </if>
+            <if test="portrait != null">
+                #{portrait},
+            </if>
+            <if test="flag != null">
+                #{flag},
+            </if>
+            <if test="createtime != null">
+                #{createtime},
+            </if>
+            <if test="createby != null">
+                #{createby},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime},
+            </if>
+            <if test="updateby != null">
+                #{updateby},
+            </if>
+        </trim>
+    </insert>
+    <update id="delectByStudentId" parameterType="java.lang.String">
+        UPDATE student
+        SET flag = 0
+        WHERE id = #{id}
+    </update>
+    <select id="findByStudent" parameterType="java.lang.String" resultType="com.hnu.model.Student">
+        SELECT *
+        FROM student
+        WHERE flag = 1 AND id = #{id};
+    </select>
+    <update id="alertStudent" parameterType="com.hnu.model.Student">
+        update student
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="classId != null">
+                class_id = #{classId},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="number != null">
+                number = #{number},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="portrait != null">
+                portrait = #{portrait},
+            </if>
+            <if test="flag != null">
+                flag = #{flag},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime},
+            </if>
+            <if test="createby != null">
+                createby = #{createby},
+            </if>
+            <if test="updatetime != null">
+                updatetime = #{updatetime},
+            </if>
+            <if test="updateby != null">
+                updateby = #{updateby},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <!--   老师模块   -->
+    <select id="teacherList" resultType="com.hnu.model.Teacher">
+        SELECT *
+        FROM teacher
+        WHERE flag = 1
+    </select>
+    <insert id="insertTeacher" parameterType="com.hnu.model.Teacher">
+        INSERT INTO teacher (id, name, number,
+                             password, phone, address,
+                             sex, age, portrait, status,
+                             createtime, createby,
+                             updatetime, updateby)
+        VALUES (#{id}, #{name}, #{number},
+                       #{password}, #{phone}, #{address},
+                       #{sex}, #{age}, #{portrait}, #{status},
+                       #{createtime}, #{createby},
+                #{updatetime}, #{updateby})
+    </insert>
+    <update id="deleteByTeacherId" parameterType="java.lang.String">
+        UPDATE teacher
+        SET flag = 0
+        WHERE id = #{id}
+    </update>
+    <select id="findByTeacher" parameterType="java.lang.String" resultType="com.hnu.model.Teacher">
+        SELECT *
+        FROM teacher
+        WHERE flag = 1 AND id = #{id};
+    </select>
+    <update id="alterTeacher" parameterType="com.hnu.model.Teacher">
+        update teacher
+        <set>
+            <if test="id != null">
+                id = #{id},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="number != null">
+                number = #{number},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="portrait != null">
+                portrait = #{portrait},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="flag != null">
+                flag = #{flag},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime},
+            </if>
+            <if test="createby != null">
+                createby = #{createby},
+            </if>
+            <if test="updatetime != null">
+                updatetime = #{updatetime},
+            </if>
+            <if test="updateby != null">
+                updateby = #{updateby},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+
+    <select id="teacherNum" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM teacher
+        WHERE flag = 1 AND status = 1
+    </select>
+
+    <select id="studentNum" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM student
+        WHERE flag = 1
+    </select>
+
+    <select id="classNum" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM clazz
+        WHERE flag = 1
+    </select>
+
+    <insert id="allotByTeacherClass" parameterType="com.hnu.model.TeacherClass">
+        insert into teacher_class
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="teacherId != null">
+                teacher_id,
+            </if>
+            <if test="classId != null">
+                class_id,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
+            <if test="createtime != null">
+                createtime,
+            </if>
+            <if test="createby != null">
+                createby,
+            </if>
+            <if test="updatetime != null">
+                updatetime,
+            </if>
+            <if test="updateby != null">
+                updateby,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="teacherId != null">
+                #{teacherId},
+            </if>
+            <if test="classId != null">
+                #{classId},
+            </if>
+            <if test="flag != null">
+                #{flag},
+            </if>
+            <if test="createtime != null">
+                #{createtime},
+            </if>
+            <if test="createby != null">
+                #{createby},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime},
+            </if>
+            <if test="updateby != null">
+                #{updateby},
+            </if>
+        </trim>
+
+    </insert>
+
+    <select id="isExitTeacherClass" parameterType="java.lang.String" resultType="com.hnu.model.TeacherClass">
+        SELECT *
+        FROM teacher_class
+        WHERE flag = 1 AND class_id = #{classId}
+    </select>
+
+    <select id="list" resultType="com.hnu.model.Teacher">
+        SELECT *
+        FROM teacher
+        WHERE flag = 1
+    </select>
+
+
+    <!--  教师端sql语句  -->
+    <select id="classNumByTeacher" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT count(*)
+        FROM teacher_class
+        WHERE flag = 1 AND teacher_id = #{id}
+    </select>
+
+    <select id="stuNumByTeacher" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT count(*)
+        FROM student st, teacher_class tc
+        WHERE st.flag = 1 AND tc.flag = 1 AND st.class_id = tc.class_id AND tc.teacher_id = #{id}
+    </select>
+
+    <select id="taskByTeacher" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT count(*)
+        FROM task
+        WHERE flag = 1 AND teacher_id = #{id}
+
+    </select>
+
+    <select id="planNum" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT count(*)
+        FROM plan
+        WHERE flag = 1 AND teacher_id = #{id}
+    </select>
+
+    <select id="xdNum" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT count(*)
+        FROM interlocution it, teacher_class tc
+        WHERE it.flag = 1 AND tc.flag = 1 AND it.class_id = tc.class_id AND tc.teacher_id = #{id} AND it.type = 0
+
+    </select>
+
+    <select id="wdNum" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT count(*)
+        FROM interlocution it, teacher_class tc
+        WHERE it.flag = 1 AND tc.flag = 1 AND it.class_id = tc.class_id AND tc.teacher_id = #{id} AND it.type = 1
+    </select>
+
+
+</mapper>

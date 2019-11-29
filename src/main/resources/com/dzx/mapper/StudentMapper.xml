@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hnu.dao.StudentMapper">
+    <select id="login" parameterType="java.lang.String" resultType="com.hnu.model.Student">
+        SELECT *
+        FROM student
+        WHERE flag = 1 AND NUMBER = #{number}
+    </select>
+    <select id="selectByPrimaryKey" resultType="com.hnu.pojo.StudentClass" parameterType="java.lang.String">
+        SELECT
+            s.*,
+            c.class_name,
+            c.class_num
+        FROM student s, clazz c
+        WHERE s.flag = 1 AND c.flag = 1 AND s.id = #{id} AND c.id = s.class_id
+    </select>
+    <select id="selectById" parameterType="java.lang.String" resultType="com.hnu.model.Student">
+        SELECT *
+        FROM student
+        WHERE flag = 1 AND id = #{id}
+
+    </select>
+
+    <update id="updateByPrimaryKey">
+        update student
+        <set>
+            <if test="classId != null">
+                class_id = #{classId},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="number != null">
+                number = #{number},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=CHAR},
+            </if>
+            <if test="age != null">
+                age = #{age,jdbcType=INTEGER},
+            </if>
+            <if test="portrait != null">
+                portrait = #{portrait},
+            </if>
+            <if test="flag != null">
+                flag = #{flag,jdbcType=TINYINT},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createby != null">
+                createby = #{createby},
+            </if>
+            <if test="updatetime != null">
+                updatetime = #{updatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateby != null">
+                updateby = #{updateby},
+            </if>
+        </set>
+        where id = #{id} and flag = 1
+    </update>
+    <select id="plan" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM student s, teacher_class tc, plan p
+        WHERE s.id = #{id} AND s.class_id = tc.class_id AND tc.teacher_id = p.teacher_id
+    </select>
+    <select id="wd" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM student s, interlocution i
+        WHERE s.id = #{id} AND i.student_id = s.id AND i.type = 1 AND i.flag = 1
+    </select>
+    <select id="xd" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM student s, interlocution i
+        WHERE s.id = #{id} AND i.student_id = s.id AND i.type = 0 AND i.flag = 1
+
+    </select>
+    <select id="task" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM student s, teacher_class tc, task t
+        WHERE s.id = #{id} AND s.class_id = tc.class_id AND tc.teacher_id = t.teacher_id AND t.flag = 1
+
+    </select>
+
+
+    <select id="taskList" parameterType="java.lang.String" resultType="com.hnu.model.StudentTask">
+        SELECT *
+        FROM student_task
+        WHERE flag = 1 AND student_id = #{studentId}
+    </select>
+
+    <select id="xwdList" parameterType="java.lang.String" resultType="com.hnu.model.Interlocution">
+        SELECT *
+        FROM interlocution
+        WHERE flag = 1 AND student_id = #{studentId}
+    </select>
+
+
+</mapper>
